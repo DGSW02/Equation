@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+int main()
+{
+	int a[100]; // 최고차항의 약수
+	int su[10]; // 다차방정식
+	int b[100]; // 상수항의 약수
+	int c[1000]; //상수항 / 최고차항
+	int a_, b_; // 최고차항, 상수항
+	int i, n, j, k, m, l; //인덱스, 방정식이 몇차 항인지, 최고차항 약수 인덱스, 상수항 약수 인덱스
+	int z; // 다차방정식의 해
+	printf("몇차 방정식인가요? : ");
+	scanf("%d", &n);
+	for (i = n; i>0; i--)
+	{
+		printf("%d차항의 계수 : ", i);
+		scanf("%d", &su[i]);
+	}
+	printf("상수항의 계수 : ");
+	scanf("%d", &su[0]);
+	a_ = su[n] < 0 ? su[n] * -1 : su[n];
+	b_ = su[0] < 0 ? su[0] * -1 : su[0];
+	l = 0;
+	for (i = 1; i*i <a_; i++)
+	{
+		if (a_%i == 0)
+		{
+			a[l++] = i;
+			a[l++] = a_ / i;
+		}
+	}
+	if (i*i == a_)
+		a[l++] = i;
+	printf("최고차항의 계수의 약수 : ");
+	for (i = 0; i<l; i++)
+	{
+		printf("%d ", a[i]);
+	}
+	printf("\n");
+	k = 0;
+	for (i = 1; i*i <b_; i++)
+	{
+		if (b_%i == 0)
+		{
+			b[k++] = i;
+			b[k++] = b_ / i;
+		}
+	}
+	if (i*i == b_)
+		b[k++] = i;
+	printf("상수항의 계수의 약수 : ");
+	for (i = 0; i < k; i++)
+	{
+		printf("%d ", b[i]);
+	}
+	printf("\n");
+	for (i = 0; i<l; i++)
+	{
+		for (j = 0; j<k; j++)
+		{
+			printf("%d:%d\t", a[i], b[j]);
+		}
+		printf("\n");
+	}
+	printf("\n\n\n");
+	for (i = 0; i<l; i++)
+	{
+		for (j = 0; j<k; j++)
+		{
+			m = 0;
+			for (int i_ = n; i_ >= 0; i_--)
+			{
+				z = 1;
+				int j_;
+				for (j_ = 0; j_<i_; j_++)
+					z *= b[j];
+				for (; j_<n; j_++)
+					z *= a[i];
+				z *= su[i_];
+				m += z;
+			}
+			if (m == 0)
+			{
+				if (a[i] == 1)
+					printf("%d는 방정식의 해\n", b[j]);
+				else
+					printf("%d/%d는 방정식의 해\n", b[j], a[i]);
+			}
+			m = 0;
+			for (int i_ = n; i_ >= 0; i_--)
+			{
+				z = 1;
+				int j_;
+				for (j_ = 0; j_<i_; j_++)
+					z *= -1 * b[j]; // 제곱
+				for (; j_<n; j_++)
+					z *= a[i]; // 통분
+				z *= su[i_];
+				m += z;
+			}
+			if (m == 0)
+			{
+				if (a[i] == 1)
+					printf("-%d는 방정식의 해\n", b[j]);
+				else
+					printf("-%d/%d는 방정식의 해\n", b[j], a[i]);
+			}
+
+		}
+	}
+	return 0;
+}
+
