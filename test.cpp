@@ -1,65 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int *find_yak(int n) //약수 찾기
-{
-    if(n < 0)
-        n *= -1;
-    int *a = (int*)malloc(sizeof(int));
-    int i, j=0;
-    for(i=1; i*i<n; i++)
-    {
-        if(n%i == 0)
-        {
-            a = (int*)realloc(a, sizeof(int)*2);
-            a[j++] = i;
-            a[j++] = n/i;
-        }
-    }
-    if(i*i == n)
-    {
-        a = (int*)realloc(a, sizeof(int));
-        a[j++] = i;
-    }
-    a[j] = -1;
-    return a;
-}
-
-int jegup(int a, int n) // 제곱
-{
-    if(n == 0)
-        return 1;
-    int i;
-    for(i=0; i<n-1; i++)
-    {
-        a *= a;
-    }
-    return a;
-}
-
+int *find_yak(int n); //약수 찾기
+int jegup(int a, int n); // 제곱
 int find_hae(int *a, int b, int c, int n) // 해 찾기
-{
-    //*a = 다차방정식
-    //b = 최고차항의 약수
-    //c = 상수항의 약수
-    int i;
-    int sum = 0;
-    for(i=0; a[i] != NULL; i++)
-    {
-        sum += jegup(b, n-i) * a[i] * jegup(c, i);
-    }
-    return sum;
-}
+void print_hae(int a, int b); // 해 출력
 
-void print_hae(int a, int b)
-{
-    if(b == 1)
-    {
-        printf("방정식의 해 : %d\n", a);
-    }
-    else
-        printf("방정식의 해 : %d / %d\n", a, b);
-}
 int main()
 {
     int *a = NULL; //다차항 배열
@@ -127,4 +73,67 @@ int main()
         }
     }
     return 0;
+}
+
+
+
+
+int *find_yak(int n) //약수 찾기
+{
+    if(n < 0)
+        n *= -1;
+    int *a = (int*)malloc(sizeof(int));
+    int i, j=0;
+    for(i=1; i*i<n; i++)
+    {
+        if(n%i == 0)
+        {
+            a = (int*)realloc(a, sizeof(int)*2);
+            a[j++] = i;
+            a[j++] = n/i;
+        }
+    }
+    if(i*i == n)
+    {
+        a = (int*)realloc(a, sizeof(int));
+        a[j++] = i;
+    }
+    a[j] = -1;
+    return a;
+}
+
+int jegup(int a, int n) // 제곱
+{
+    if(n == 0)
+        return 1;
+    int i;
+    for(i=0; i<n-1; i++)
+    {
+        a *= a;
+    }
+    return a;
+}
+
+int find_hae(int *a, int b, int c, int n) // 해 찾기
+{
+    //*a = 다차방정식
+    //b = 최고차항의 약수
+    //c = 상수항의 약수
+    int i;
+    int sum = 0;
+    for(i=0; a[i] != NULL; i++)
+    {
+        sum += jegup(b, n-i) * a[i] * jegup(c, i);
+    }
+    return sum;
+}
+
+void print_hae(int a, int b)
+{
+    if(b == 1)
+    {
+        printf("방정식의 해 : %d\n", a);
+    }
+    else
+        printf("방정식의 해 : %d / %d\n", a, b);
 }
